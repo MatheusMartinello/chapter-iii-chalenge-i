@@ -7,7 +7,9 @@ import logo from '../../../public/Logospacetraveling.svg';
 export default function Header() {
   return (
     <header className={styles.headerContainer}>
-      <img src={logo} alt="Logo" />
+      <a href="/">
+        <img src={logo} alt="logo" />
+      </a>
     </header>
   );
 }
