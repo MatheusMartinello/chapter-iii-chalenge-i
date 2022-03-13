@@ -1,3 +1,4 @@
+/* eslint-disable react/button-has-type */
 import { GetStaticProps } from 'next';
 import { Head } from 'next/document';
 
@@ -34,6 +35,9 @@ export default function Home() {
   const date = format(new Date(), ' dd LLL yyyy', {
     locale: ptBR,
   });
+  const handlePress = () => {
+    console.log('Click');
+  };
   return (
     <>
       <div className={styles.conteiner}>
@@ -73,7 +77,7 @@ export default function Home() {
         </div>
       </div>
       <div className={styles.buttonContent}>
-        <button>Carregar Mais</button>
+        <button onClick={handlePress}>Carregar Mais</button>
       </div>
     </>
   );

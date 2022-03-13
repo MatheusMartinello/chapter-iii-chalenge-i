@@ -17,6 +17,9 @@ body {
   background-color: var(--backgroud);
   color: var(--body);
   font-family: 'Inter';
+  display: flex;
+  align-items: center;
+  justify-content: center;
 }
 
 body,
