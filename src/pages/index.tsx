@@ -72,10 +72,10 @@ export default function Home({ postsPagination }: HomeProps) {
     setposts([...posts, dataResult[0]]);
   };
   return (
-    <>
+    <div className={commonStyles.cont}>
       {posts.map(post => (
-        <div className={styles.conteiner}>
-          <Link key={post.uid} href={`/posts/${post.uid}`}>
+        <div className={styles.container}>
+          <Link key={post.uid} href={`/post/${post.uid}`}>
             <a key={post.uid}>
               <strong>{post.data.title}</strong>
               <p>{post.data.subtitle}</p>
@@ -98,7 +98,7 @@ export default function Home({ postsPagination }: HomeProps) {
           <button onClick={handlePress}>Carregar Mais posts</button>
         </div>
       )}
-    </>
+    </div>
   );
 }
 
@@ -108,7 +108,8 @@ export const getStaticProps: GetStaticProps = async () => {
   const response = await prismic.query(
     [Prismic.predicates.at('document.type', 'post')],
     {
-      pageSize: 2,
+      pageSize: 1,
+      //fetch: '[post.title,post.subtitle,post.author]',
     }
   );
   const results = response.results.map(post => {
@@ -120,7 +121,7 @@ export const getStaticProps: GetStaticProps = async () => {
         author: RichText.asText(post.data.author),
       },
       first_publication_date: format(
-        new Date(post.last_publication_date),
+        new Date(post.first_publication_date),
         ' dd LLL yyyy',
         {
           locale: ptBR,
