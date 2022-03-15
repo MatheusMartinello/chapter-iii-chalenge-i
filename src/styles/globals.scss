@@ -5,6 +5,7 @@
 }
 
 :root {
+<<<<<<< HEAD
   --highlight: #FF57B2;
   --heading: #F8F8F8;
   --background:#1A1D23;
@@ -19,11 +20,28 @@ body {
 }
 
 @media (max-width:1080px) {
+=======
+  --highlight: #ff57b2;
+  --heading: #f8f8f8;
+  --background: #1a1d23;
+  --info: #bbbbbb;
+  --body: #d7d7d7;
+  --border: #282c34;
+}
+
+body {
+  background: var(--background);
+  color: var(--body);
+}
+
+@media (max-width: 1080px) {
+>>>>>>> d266a3c63308076592791fe64f42d02e67d40872
   html {
     font-size: 93.75%;
   }
 }
 
+<<<<<<< HEAD
 @media (max-width:720px) {
   html {
     font-size: 87.5%;
@@ -36,9 +54,31 @@ body, input, textarea, button, select {
 
 button {
   cursor: pointer;
+=======
+@media (max-width: 720px) {
+  html {
+    font-size: 87.5%;
+  }
+}
+
+body,
+input,
+textarea,
+button,
+select {
+  font: 400 1rem 'Inter', sans-serif;
+>>>>>>> d266a3c63308076592791fe64f42d02e67d40872
+}
+
+button {
+  cursor: pointer;
 }
 
 a {
   color: inherit;
   text-decoration: none;
+<<<<<<< HEAD
 }
+=======
+}
+>>>>>>> d266a3c63308076592791fe64f42d02e67d40872
