@@ -10,7 +10,8 @@ import { RichText } from 'prismic-dom';
 import { ptBR } from 'date-fns/locale';
 import { TiCalendarOutline } from 'react-icons/ti';
 import { MdOutlinePersonOutline } from 'react-icons/md';
-import { FiCalendar, FiUser } from 'react-icons/fi';
+import { FiCalendar, FiClock, FiUser } from 'react-icons/fi';
+import { useRouter } from 'next/router';
 
 interface Post {
   first_publication_date: string | null;
@@ -34,6 +35,8 @@ interface PostProps {
 }
 
 export default function Post({ post }: PostProps) {
+  const router = useRouter();
+  if (router.isFallback) return <h1>Carregando...</h1>;
   return (
     <>
       <img src={post.data.banner.url} alt="banner" style={{ width: '100%' }} />
@@ -41,35 +44,32 @@ export default function Post({ post }: PostProps) {
         <strong>{post.data.title}</strong>
         <div className={styles.post}>
           <div className={styles.postTop}>
-            <h1>{post.data.title}</h1>
+            <h1>{post.data.subtitle}</h1>
             <ul>
               <li>
                 <FiCalendar />
-                {post.first_publication_date}
+                {format(new Date(post.first_publication_date), 'dd LLL yyyy', {
+                  locale: ptBR,
+                })}
               </li>
               <li>
                 <FiUser />
                 {post.data.author}
               </li>
-              {/* <li>
+              <li>
                 <FiClock />
-                {`${readTime} min`}
-              </li> */}
+                {`4 min`}
+              </li>
             </ul>
           </div>
 
           {post.data.content.map(content => (
             <article key={content.heading}>
-              <h2
-                className={styles.postContent}
-                dangerouslySetInnerHTML={{
-                  __html: content.heading,
-                }}
-              />
+              <h2>{content.heading}</h2>
               <div
                 className={styles.postContent}
                 dangerouslySetInnerHTML={{
-                  __html: content.body,
+                  __html: RichText.asHtml(content.body),
                 }}
               />
             </article>
@@ -107,26 +107,20 @@ export const getStaticProps: GetStaticProps = async ({ params }) => {
   const post = {
     uid: response.uid,
     data: {
-      title: RichText.asText(response.data.title),
-      subtitle: RichText.asText(response.data.subtitle),
-      author: RichText.asText(response.data.author),
+      title: response.data.title,
+      subtitle: response.data.subtitle,
+      author: response.data.author,
       banner: {
         url: response.data.banner.url,
       },
       content: response.data.content.map(content => {
         return {
-          heading: RichText.asHtml(content.heading),
-          body: RichText.asHtml(content.body),
+          heading: content.heading,
+          body: content.body,
         };
       }),
     },
-    first_publication_date: format(
-      new Date(response.first_publication_date),
-      ' dd LLL yyyy',
-      {
-        locale: ptBR,
-      }
-    ),
+    first_publication_date: response.first_publication_date,
   };
   return { props: { post } };
 };

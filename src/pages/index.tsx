@@ -38,21 +38,14 @@ export default function Home({ postsPagination }: HomeProps) {
   async function handleNextPage(): Promise<void> {
     const postsResults = await fetch(`${nextPage}`).then(res => res.json());
     setNextPage(postsResults.next_page);
-    console.log(postsResults.results);
     const newPosts = postsResults.results.map(post => {
       return {
         uid: post.uid,
-        first_publication_date: format(
-          new Date(post.last_publication_date),
-          ' dd LLL yyyy',
-          {
-            locale: ptBR,
-          }
-        ),
+        first_publication_date: post.first_publication_date,
         data: {
-          title: RichText.asText(post.data.title),
-          subtitle: RichText.asText(post.data.subtitle),
-          author: RichText.asText(post.data.author),
+          title: post.data.title,
+          subtitle: post.data.subtitle,
+          author: post.data.author,
         },
       };
     });
@@ -71,7 +64,13 @@ export default function Home({ postsPagination }: HomeProps) {
                 <ul>
                   <li>
                     <FiCalendar />
-                    {post.first_publication_date}
+                    {format(
+                      new Date(post.first_publication_date),
+                      ' dd LLL yyyy',
+                      {
+                        locale: ptBR,
+                      }
+                    )}
                   </li>
                   <li>
                     <FiUser />
@@ -104,17 +103,11 @@ export const getStaticProps: GetStaticProps = async () => {
   const posts = postsResponse.results.map(post => {
     return {
       uid: post.uid,
-      first_publication_date: format(
-        new Date(post.first_publication_date),
-        ' dd LLL yyyy',
-        {
-          locale: ptBR,
-        }
-      ),
+      first_publication_date: post.first_publication_date,
       data: {
-        title: RichText.asText(post.data.title),
-        subtitle: RichText.asText(post.data.subtitle),
-        author: RichText.asText(post.data.author),
+        title: post.data.title,
+        subtitle: post.data.subtitle,
+        author: post.data.author,
       },
     };
   });
